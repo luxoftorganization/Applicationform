@@ -1,14 +1,245 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Luxoft Careers</title><link rel="stylesheet" href="style.css"/></head>
-<body><header><img src="luxoft-logo.png" alt="Luxoft Logo" class="logo"/>
-<h1>WORK FROM HOME JOBS AVAILABLE</h1>
-<p>Join our team at Luxoft and work from the comfort of your home.<br>
-We are hiring for remote positions with excellent pay and benefits.</p>
-<a href="apply.html" class="btn">APPLY NOW</a></header>
-<section class="images">
-<img src="img1.jpg"/><img src="img2.jpg"/><img src="img3.jpg"/><img src="img4.jpg"/></section>
-<section class="info"><div class="benefits">
-<h2>Benefits</h2><ul><li>Competitive pay</li><li>Flexible working hours</li><li>Health, dental, and vision insurance</li></ul></div>
-<div class="apply-now"><h2>Ready to Apply?</h2><a href="apply.html" class="btn">Go to Application</a></div></section>
-<footer><p>Email: luxoftorganization@gmail.com | Direct text or call: (480) 559-8731 | Whatsapp: (910) 710 1468</p></footer></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxoft Careers</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #1a0d2e;
+      color: #e6e6e6;
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2c1a5b, #5b21b6);
+      color: white;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      max-width: 150px;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    header p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(45deg, #7c3aed, #ec4899);
+      color: white;
+      padding: 0.9rem 2.2rem;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(124, 58, 237, 0.4);
+    }
+
+    .images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      padding: 2.5rem;
+      background: linear-gradient(180deg, #2c1a5b, #1a0d2e);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .images img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #7c3aed;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .images img:hover {
+      transform: scale(1.05);
+      border-color: #ec4899;
+    }
+
+    .info {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .benefits, .apply-now {
+      background: #2c1a5b;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+      border: 1px solid #7c3aed;
+      transition: transform 0.3s ease;
+    }
+
+    .benefits:hover, .apply-now:hover {
+      transform: translateY(-4px);
+    }
+
+    .benefits h2, .apply-now h2 {
+      font-size: 1.9rem;
+      font-weight: 500;
+      color: #e9d5ff;
+      margin-bottom: 1.2rem;
+    }
+
+    .benefits ul {
+      list-style: none;
+      text-align: left;
+      max-width: 350px;
+      margin: 0 auto;
+    }
+
+    .benefits li {
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-left: 2rem;
+      color: #e6e6e6;
+    }
+
+    .benefits li::before {
+      content: "✦";
+      color: #ec4899;
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #2c1a5b, #5b21b6);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 300;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    footer a {
+      color: #ec4899;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #f9a8d4;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.9rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      .info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .images {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        padding: 0.8rem 1.8rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 1.5rem 0.5rem;
+      }
+
+      header h1 {
+        font-size: 1.6rem;
+      }
+
+      .images img {
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="luxoft-logo.png" alt="Luxoft Logo" class="logo" />
+    <h1>Work From Home Jobs Available</h1>
+    <p>Join our team at Luxoft and work from the comfort of your home.<br>
+      We are hiring for remote positions with excellent pay and benefits.</p>
+    <a href="apply.html" class="btn">Apply Now</a>
+  </header>
+  <section class="images">
+    <img src="img1.jpg" alt="Team collaboration" />
+    <img src="img2.jpg" alt="Remote work setup" />
+    <img src="img3.jpg" alt="Office environment" />
+    <img src="img4.jpg" alt="Work from home" />
+  </section>
+  <section class="info">
+    <div class="benefits">
+      <h2>Benefits</h2>
+      <ul>
+        <li>Competitive pay</li>
+        <li>Flexible working hours</li>
+        <li>Health, dental, and vision insurance</li>
+      </ul>
+    </div>
+    <div class="apply-now">
+      <h2>Ready to Apply?</h2>
+      <a href="apply.html" class="btn">Go to Application</a>
+    </div>
+  </section>
+  <footer>
+    <p>Email: <a href="mailto:luxoftorganization@gmail.com">luxoftorganization@gmail.com</a> | Direct text or call: <a href="tel:+4805598731">(480) 559-8731</a> | Whatsapp: <a href="https://wa.me/9107101468">(910) 710 1468</a></p>
+  </footer>
+</body>
+</html>
