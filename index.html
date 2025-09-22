@@ -11,207 +11,212 @@
       --highlight: #ec4899;
       --text: #e6e6e6;
       --card: #2c1a5b;
+      --font: 'Segoe UI', 'Roboto', sans-serif;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', 'Roboto', sans-serif;
-    }
+      font-family: var(--font);
+   }
 
-    body {
-      background-color: var(--primary);
-      color: var(--text);
-      line-height: 1.6;
-    }
+   body {
+     background-color: var(--primary);
+     color: var(--text);
+     line-height: 1.6;
+   }
 
-    header {
-      background: linear-gradient(135deg, var(--card), #5b21b6);
-      color: white;
-      text-align: center;
-      padding: 2.5rem 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
+   /* Header */
+   header {
+     background: linear-gradient(135deg, var(--card), #5b21b6);
+     text-align: center;
+     padding: 3rem 1rem;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+   }
 
-    .logo {
-      max-width: 150px;
-      margin-bottom: 1.5rem;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
-    }
+   .logo {
+     max-width: 150px;
+     margin-bottom: 1.5rem;
+     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+   }
 
-    header h1 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    }
+   header h1 {
+     font-size: 2.5rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     color: #e9d5ff;
+     margin-bottom: 1rem;
+   }
 
-    header p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      font-weight: 300;
-      opacity: 0.9;
-    }
+   header p {
+     font-size: 1.2rem;
+     max-width: 600px;
+     margin: 0 auto;
+     opacity: 0.9;
+   }
 
-    .btn {
-      display: inline-block;
-      background: linear-gradient(45deg, var(--accent), var(--highlight));
-      color: white;
-      padding: 0.9rem 2.2rem;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 500;
-      font-size: 1.1rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+   /* Button */
+   .btn {
+     display: inline-block;
+     background: linear-gradient(45deg, var(--accent), var(--highlight));
+     color: white;
+     padding: 0.9rem 2rem;
+     margin-top: 2rem;
+     border-radius: 6px;
+     font-weight: 600;
+     text-decoration: none;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+   }
 
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(124, 58, 237, 0.4);
-    }
+   .btn:hover {
+     transform: translateY(-3px);
+     box-shadow: 0 6px 15px rgba(124, 58, 237, 0.4);
+   }
 
-    .images {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.2rem;
-      padding: 2.5rem;
-      background: linear-gradient(180deg, var(--card), var(--primary));
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+   /* Image Grid */
+   .images {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+     gap: 1.2rem;
+     padding: 2.5rem;
+     background: linear-gradient(180deg, var(--card), var(--primary));
+     max-width: 1200px;
+     margin: 0 auto;
+   }
 
-    .images img {
-      width: 100%;
-      height: 210px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid var(--accent);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
+   .images img {
+     width: 100%;
+     height: 210px;
+     object-fit: cover;
+     border-radius: 8px;
+     border: 2px solid var(--accent);
+     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+     transition: transform 0.3s ease, border-color 0.3s ease;
+   }
 
-    .images img:hover {
-      transform: scale(1.05);
-      border-color: var(--highlight);
-    }
+   .images img:hover {
+     transform: scale(1.05);
+     border-color: var(--highlight);
+   }
 
-    .info {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 2.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-    }
+   /* Info Cards */
+   .info {
+     display: flex;
+     justify-content: center;
+     gap: 2rem;
+     padding: 2.5rem;
+     max-width: 1200px;
+     margin: 0 auto;
+     flex-wrap: wrap;
+   }
 
-    .benefits, .apply-now {
-      background: var(--card);
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      flex: 1;
-      min-width: 300px;
-      text-align: center;
-      border: 1px solid var(--accent);
-      transition: transform 0.3s ease;
-    }
+   .benefits, .apply-now {
+     background: var(--card);
+     padding: 2rem;
+     border-radius: 8px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+     flex: 1;
+     min-width: 300px;
+     text-align: center;
+     border: 1px solid var(--accent);
+     transition: transform 0.3s ease;
+   }
 
-    .benefits:hover, .apply-now:hover {
-      transform: translateY(-4px);
-    }
+   .benefits:hover, .apply-now:hover {
+    transform: translateY(-4px);
+   }
 
-    .benefits h2, .apply-now h2 {
-      font-size: 1.9rem;
-      font-weight: 500;
-      color: #e9d5ff;
-      margin-bottom: 1.2rem;
-    }
+.benefits h2, .apply-now h2 {
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: #e9d5ff;
+  margin-bottom: 1.2rem;
+}
 
-    .benefits ul {
-      list-style: none;
-      text-align: left;
-      max-width: 350px;
-      margin: 0 auto;
-    }
+.benefits ul {
+  list-style: none;
+  text-align: left;
+  max-width: 350px;
+  margin: 0 auto;
+}
 
-    .benefits li {
-      font-size: 1.1rem;
-      margin-bottom: 0.8rem;
-      position: relative;
-      padding-left: 2rem;
-      color: var(--text);
-    }
+.benefits li {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+  padding-left: 2rem;
+  color: var(--text);
+}
 
-    .benefits li::before {
-      content: "✦";
-      color: var(--highlight);
-      position: absolute;
-      left: 0;
-      font-size: 1.2rem;
-    }
+.benefits li::before {
+  content: "✦";
+  color: var(--highlight);
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
 
-    footer {
-      background: linear-gradient(135deg, var(--card), #5b21b6);
-      color: white;
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.95rem;
-      font-weight: 300;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-    }
+/* Footer */
+footer {
+  background: linear-gradient(135deg, var(--card), #5b21b6);
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 300;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
 
-    footer a {
-      color: var(--highlight);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
+footer a {
+  color: var(--highlight);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
 
-    footer a:hover {
-      color: #f9a8d4;
-    }
+footer a:hover {
+  color: #f9a8d4;
+}
 
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.9rem;
-      }
+/* Responsive */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.9rem;
+  }
 
-      header p {
-        font-size: 1rem;
-      }
+  header p {
+    font-size: 1rem;
+  }
 
-      .info {
-        flex-direction: column;
-        align-items: center;
-      }
+  .info {
+    flex-direction: column;
+    align-items: center;
+  }
 
-      .images {
-        grid-template-columns: 1fr;
-      }
+  .images {
+    grid-template-columns: 1fr;
+  }
 
-      .btn {
-        padding: 0.8rem 1.8rem;
-        font-size: 1rem;
-      }
-    }
+  .btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+  }
+}
 
-    @media (max-width: 480px) {
-      header {
-        padding: 1.5rem 0.5rem;
-      }
+@media (max-width: 480px) {
+  header {
+    padding: 1.5rem 0.5rem;
+  }
 
-      header h1 {
-        font-size: 1.6rem;
-      }
+  header h1 {
+    font-size: 1.6rem;
+  }
 
-      .images img {
-        height: 180px;
-      }
-    }
+  .images img {
+    height: 180px;
+  }
+}
+
   </style>
 </head>
 <body>
