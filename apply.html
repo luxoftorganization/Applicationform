@@ -202,6 +202,11 @@
   <div class="container">
     <h1>Luxoft Application Form</h1>
     <form action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
+      <!-- FormSubmit hidden fields -->
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_redirect" value="thankyou.html">
+      
       <div class="form-group">
         <label for="fullname">Full Name</label>
         <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
